@@ -1,0 +1,1073 @@
+<!DOCTYPE html>
+<html lang="zh-TW" class="dark scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CYBERSTRIKE: ZERO KELVIN - 次世代賽博龐克戰術槍戰官網</title>
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Orbitron & Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Orbitron:wght@600;800;900&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        cyber: {
+                            accent: 'var(--accent-color)',
+                            secondary: 'var(--secondary-color)',
+                            flame: 'var(--flame-color)',
+                            dark: 'var(--bg-cyber-dark)',
+                            panel: 'rgba(15, 23, 42, 0.75)',
+                            border: 'rgba(255, 255, 255, 0.12)'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        display: ['Orbitron', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* ==========================================================================
+           Cyberpunk Dynamic Theme Variables & Flame Visual Tokens
+           ========================================================================== */
+        :root {
+            /* Theme 1: Ice Cyan Fire (Default) */
+            --accent-color: #00f0ff;
+            --accent-rgb: 0, 240, 255;
+            --secondary-color: #ff0055;
+            --secondary-rgb: 255, 0, 85;
+            --flame-color: #00d8ff;
+            --flame-rgb: 0, 216, 255;
+            --bg-cyber-dark: #070b14;
+            --bg-gradient-start: #040711;
+            --bg-gradient-end: #0e172a;
+            --glow-color: rgba(0, 240, 255, 0.45);
+            --card-bg: rgba(11, 18, 33, 0.88);
+            --text-main: #f1f5f9;
+            --text-sub: #94a3b8;
+            --border-color: rgba(255, 255, 255, 0.18);
+            --grid-opacity: 0.45;
+        }
+
+        body.theme-red {
+            /* Theme 2: Crimson Inferno Flame */
+            --accent-color: #ff2a5f;
+            --accent-rgb: 255, 42, 95;
+            --secondary-color: #ffaa00;
+            --secondary-rgb: 255, 170, 0;
+            --flame-color: #ff5500;
+            --flame-rgb: 255, 85, 0;
+            --bg-cyber-dark: #120508;
+            --bg-gradient-start: #0a0204;
+            --bg-gradient-end: #1d080e;
+            --glow-color: rgba(255, 60, 0, 0.55);
+            --card-bg: rgba(26, 10, 16, 0.88);
+        }
+
+        body.theme-green {
+            /* Theme 3: Toxic Emerald Plasma Flame */
+            --accent-color: #10b981;
+            --accent-rgb: 16, 185, 129;
+            --secondary-color: #06b6d4;
+            --secondary-rgb: 6, 182, 212;
+            --flame-color: #34d399;
+            --flame-rgb: 52, 211, 153;
+            --bg-cyber-dark: #04120b;
+            --bg-gradient-start: #020b06;
+            --bg-gradient-end: #0a2116;
+            --glow-color: rgba(16, 185, 129, 0.5);
+            --card-bg: rgba(9, 28, 19, 0.88);
+        }
+
+        body.theme-gold {
+            /* Theme 4: Cyberpunk Solar Flame */
+            --accent-color: #f59e0b;
+            --accent-rgb: 245, 158, 11;
+            --secondary-color: #ef4444;
+            --secondary-rgb: 239, 68, 68;
+            --flame-color: #ff7700;
+            --flame-rgb: 255, 119, 0;
+            --bg-cyber-dark: #140d04;
+            --bg-gradient-start: #0c0802;
+            --bg-gradient-end: #241708;
+            --glow-color: rgba(245, 158, 11, 0.5);
+            --card-bg: rgba(28, 20, 9, 0.88);
+        }
+
+        /* Light Cyber Mode Overrides */
+        body.light-mode {
+            --bg-cyber-dark: #f8fafc;
+            --bg-gradient-start: #ffffff;
+            --bg-gradient-end: #e2e8f0;
+            --card-bg: rgba(255, 255, 255, 0.9);
+            --text-main: #0f172a;
+            --text-sub: #475569;
+            --border-color: rgba(15, 23, 42, 0.18);
+            --grid-opacity: 0.25;
+        }
+
+        /* Hide Hardware Pointer for Custom Crosshair */
+        @media (pointer: fine) {
+            body, a, button, input {
+                cursor: none !important;
+            }
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--bg-gradient-start) 0%, var(--bg-cyber-dark) 50%, var(--bg-gradient-end) 100%);
+            background-attachment: fixed;
+            color: var(--text-main);
+            overflow-x: hidden;
+            font-family: 'Inter', sans-serif;
+            transition: background 0.6s ease, color 0.4s ease;
+        }
+
+        /* Dynamic Utilities */
+        .text-accent { color: var(--accent-color) !important; }
+        .bg-accent { background-color: var(--accent-color) !important; }
+        .border-accent { border-color: var(--accent-color) !important; }
+        
+        .text-secondary { color: var(--secondary-color) !important; }
+        .bg-secondary { background-color: var(--secondary-color) !important; }
+        .border-secondary { border-color: var(--secondary-color) !important; }
+
+        /* Dynamic Animated Cyber Grid Background */
+        .cyber-grid-bg {
+            position: fixed;
+            inset: 0;
+            background-image: 
+                linear-gradient(to right, rgba(var(--accent-rgb), 0.08) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(var(--accent-rgb), 0.08) 1px, transparent 1px);
+            background-size: 60px 60px;
+            pointer-events: none;
+            z-index: 1;
+            opacity: var(--grid-opacity);
+            animation: gridMove 20s linear infinite;
+        }
+
+        @keyframes gridMove {
+            0% { background-position: 0 0; }
+            100% { background-position: 60px 60px; }
+        }
+
+        /* Dynamic Ambient Flame Heat Glow Layer */
+        .flame-ambient-glow {
+            position: fixed;
+            bottom: -20vh;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 120vw;
+            height: 60vh;
+            background: radial-gradient(ellipse at bottom, rgba(var(--flame-rgb), 0.35) 0%, rgba(var(--accent-rgb), 0.15) 45%, transparent 75%);
+            filter: blur(80px);
+            pointer-events: none;
+            z-index: 2;
+            animation: flamePulse 3.5s ease-in-out infinite alternate;
+        }
+
+        @keyframes flamePulse {
+            0% { opacity: 0.6; transform: translateX(-50%) scale(0.98); }
+            100% { opacity: 0.95; transform: translateX(-50%) scale(1.05); }
+        }
+
+        /* Dynamic Canvas Layers */
+        #flame-canvas, #spark-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+        }
+
+        #flame-canvas { z-index: 2; }
+        #spark-canvas { z-index: 9997; }
+
+        /* Keyframe Animations */
+        @keyframes floatSlow {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-16px) rotate(0.6deg); }
+        }
+
+        .animate-float {
+            animation: floatSlow 6s ease-in-out infinite;
+        }
+
+        /* Cyber Glassmorphism Card Style */
+        .glass-panel {
+            background: var(--card-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--border-color);
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Metallic Sheen Sweep Animation on Hover */
+        .metallic-sheen {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .metallic-sheen::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -150%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(
+                60deg,
+                transparent 30%,
+                rgba(255, 255, 255, 0.2) 45%,
+                rgba(255, 255, 255, 0.4) 50%,
+                rgba(255, 255, 255, 0.2) 55%,
+                transparent 70%
+            );
+            transform: rotate(25deg);
+            transition: all 0.8s ease;
+            pointer-events: none;
+        }
+
+        .metallic-sheen:hover::after {
+            left: 100%;
+        }
+
+        /* Interactive Cyber Metallic Buttons */
+        .btn-cyber-primary {
+            background: linear-gradient(135deg, var(--secondary-color) 0%, #0f172a 100%);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 0 25px rgba(var(--secondary-rgb), 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.4);
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .btn-cyber-primary:hover {
+            box-shadow: 0 0 40px rgba(var(--secondary-rgb), 0.85), inset 0 1px 0 rgba(255, 255, 255, 0.8);
+            transform: translateY(-2px);
+        }
+
+        .btn-cyber-secondary {
+            border: 1.5px solid var(--accent-color);
+            background: rgba(var(--accent-rgb), 0.12);
+            box-shadow: 0 0 18px rgba(var(--accent-rgb), 0.3), inset 0 0 10px rgba(var(--accent-rgb), 0.15);
+            transition: all 0.3s ease;
+        }
+
+        .btn-cyber-secondary:hover {
+            background: rgba(var(--accent-rgb), 0.28);
+            box-shadow: 0 0 30px rgba(var(--accent-rgb), 0.7);
+            transform: translateY(-2px);
+        }
+
+        /* Navigation Links Glow Hover */
+        .nav-link {
+            position: relative;
+            transition: color 0.3s ease;
+        }
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -6px;
+            left: 0;
+            width: 0%;
+            height: 2px;
+            background-color: var(--accent-color);
+            box-shadow: 0 0 8px var(--accent-color);
+            transition: width 0.3s ease;
+        }
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        /* Scroll Reveal Animation Classes */
+        .reveal-element {
+            opacity: 0;
+            transform: translateY(40px) scale(0.96);
+            transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+            will-change: opacity, transform;
+        }
+
+        .reveal-element.active {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+
+        /* Custom Crosshair Cursor Element */
+        #cursor-dot {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 6px;
+            height: 6px;
+            background-color: var(--accent-color);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9999;
+            transform: translate(-50%, -50%);
+            box-shadow: 0 0 12px var(--accent-color);
+            transition: background-color 0.3s ease;
+        }
+
+        #cursor-ring {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 38px;
+            height: 38px;
+            border: 1.5px solid var(--accent-color);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9998;
+            transform: translate(-50%, -50%);
+            background: radial-gradient(circle, rgba(255,255,255,0.08) 0%, transparent 70%);
+            box-shadow: 0 0 18px rgba(var(--accent-rgb), 0.5);
+            transition: border-color 0.3s ease, width 0.2s ease, height 0.2s ease;
+        }
+    </style>
+</head>
+<body class="relative min-h-screen">
+
+    <!-- Dynamic Animated Flame Canvas -->
+    <canvas id="flame-canvas"></canvas>
+    <!-- Muzzle Spark Canvas Layer -->
+    <canvas id="spark-canvas"></canvas>
+    
+    <!-- Cyber Grid Layer & Flame Heat Glow -->
+    <div class="cyber-grid-bg"></div>
+    <div class="flame-ambient-glow"></div>
+
+    <!-- Sci-Fi Crosshair Cursor -->
+    <div id="cursor-dot"></div>
+    <div id="cursor-ring"></div>
+
+    <!-- 導覽列 (Sticky Navigation Bar with Full Navigation Tabs) -->
+    <nav id="navbar" class="fixed top-0 left-0 w-full z-50 transition-all duration-300 border-b border-white/10 py-3 px-4 md:px-8 glass-panel">
+        <div class="max-w-7xl mx-auto flex items-center justify-between">
+            
+            <!-- Brand Logo with Metallic Emblem Image -->
+            <a href="#" class="flex items-center gap-3 group shrink-0">
+                <div class="relative w-10 h-10 md:w-11 md:h-11 flex items-center justify-center p-0.5 rounded-xl bg-gradient-to-tr from-[var(--accent-color)] via-white/30 to-[var(--secondary-color)] shadow-[0_0_20px_rgba(var(--accent-rgb),0.4)] transition-transform duration-300 group-hover:scale-105">
+                    <div class="w-full h-full bg-slate-950 rounded-[10px] flex items-center justify-center overflow-hidden">
+                        <!-- High-Tech Metallic Emblem SVG Logo -->
+                        <svg class="w-6 h-6 md:w-7 md:h-7 text-accent transition-all duration-300 group-hover:rotate-45" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                            <polygon points="12 2 2 7 12 12 22 7 12 2" fill="currentColor" fill-opacity="0.15" />
+                            <polyline points="2 17 12 22 22 17" />
+                            <polyline points="2 12 12 17 22 12" />
+                            <circle cx="12" cy="12" r="2" fill="var(--secondary-color)" />
+                        </svg>
+                    </div>
+                </div>
+                <div class="flex flex-col">
+                    <span class="font-display font-black text-lg md:text-xl tracking-wider text-white flex items-center gap-1.5">
+                        CYBER<span class="text-accent">STRIKE</span>
+                        <span class="w-1.5 h-1.5 rounded-full bg-[var(--flame-color)] animate-ping"></span>
+                    </span>
+                    <span class="text-[9px] font-display text-slate-400 tracking-widest -mt-1 font-semibold uppercase hidden sm:inline-block">ZERO KELVIN • FLAME WARZONE</span>
+                </div>
+            </a>
+
+            <!-- Explicit Header Navigation Links / Tabs -->
+            <div class="hidden lg:flex items-center gap-7 font-semibold text-xs tracking-wider uppercase">
+                <a href="#features" class="nav-link text-slate-200 hover:text-accent flex items-center gap-2">
+                    <i class="fa-solid fa-fire-flame-curved text-[11px] text-accent"></i> 遊戲特色
+                </a>
+                <a href="#weapons" class="nav-link text-slate-200 hover:text-accent flex items-center gap-2">
+                    <i class="fa-solid fa-gun text-[11px] text-accent"></i> 武器系統
+                </a>
+                <a href="#gameplay" class="nav-link text-slate-200 hover:text-accent flex items-center gap-2">
+                    <i class="fa-solid fa-gamepad text-[11px] text-accent"></i> 實機展示
+                </a>
+                <a href="#news" class="nav-link text-slate-200 hover:text-accent flex items-center gap-2">
+                    <i class="fa-solid fa-bullhorn text-[11px] text-accent"></i> 最新公告
+                </a>
+                <a href="#specs" class="nav-link text-slate-200 hover:text-accent flex items-center gap-2">
+                    <i class="fa-solid fa-sliders text-[11px] text-accent"></i> 需求規格
+                </a>
+            </div>
+
+            <!-- Header Action Utilities: Theme Dropdown, Sun/Moon Light Mode, CTA Button -->
+            <div class="flex items-center gap-3">
+                
+                <!-- Sun/Moon Light Cyber Mode Toggle Button -->
+                <button id="light-mode-toggle" onclick="toggleLightCyberMode()" class="glass-panel p-2.5 rounded-xl border border-white/15 hover:border-accent text-amber-400 hover:text-amber-300 transition-colors shadow-lg flex items-center justify-center" title="切換白晝/暗黑賽博模式">
+                    <i id="light-mode-icon" class="fa-solid fa-sun text-sm"></i>
+                </button>
+
+                <!-- Color Palette Theme Switcher with Hover/Click Stay-Alive Buffer -->
+                <div class="relative group" id="theme-menu-container">
+                    <button id="theme-btn" class="glass-panel px-3 py-2 rounded-xl border border-white/15 text-xs font-semibold flex items-center gap-2 hover:border-accent transition-colors shadow-lg">
+                        <span id="theme-indicator" class="w-3.5 h-3.5 rounded-full bg-[var(--accent-color)] shadow-[0_0_10px_var(--accent-color)]"></span>
+                        <span class="hidden sm:inline font-display text-[11px] tracking-wider text-slate-200">色系與烈焰</span>
+                        <i class="fa-solid fa-fire text-xs text-accent"></i>
+                    </button>
+
+                    <!-- Extended Dropdown Menu with Safety Buffer Area -->
+                    <div class="absolute right-0 top-full pt-2 w-48 opacity-0 group-hover:opacity-100 pointer-events-none group-hover:pointer-events-auto transition-all duration-300 z-50">
+                        <div class="glass-panel rounded-xl p-2 border border-white/15 shadow-2xl flex flex-col gap-1">
+                            <div class="text-[10px] font-display text-slate-400 px-3 py-1 uppercase tracking-wider font-bold border-b border-white/10 mb-1">
+                                賽博主題與烈焰色系
+                            </div>
+                            
+                            <button onclick="changeTheme('cyan')" class="flex items-center justify-between px-3 py-1.5 rounded-lg text-xs hover:bg-white/10 transition-colors w-full text-left font-medium">
+                                <span class="flex items-center gap-2"><span class="w-3 h-3 rounded-full bg-cyan-400"></span> 冰晶藍 (冰焰)</span>
+                                <i class="fa-solid fa-check text-[10px] opacity-0 check-cyan"></i>
+                            </button>
+                            
+                            <button onclick="changeTheme('red')" class="flex items-center justify-between px-3 py-1.5 rounded-lg text-xs hover:bg-white/10 transition-colors w-full text-left font-medium">
+                                <span class="flex items-center gap-2"><span class="w-3 h-3 rounded-full bg-rose-500"></span> 極限紅 (赤焰)</span>
+                                <i class="fa-solid fa-check text-[10px] opacity-0 check-red"></i>
+                            </button>
+
+                            <button onclick="changeTheme('green')" class="flex items-center justify-between px-3 py-1.5 rounded-lg text-xs hover:bg-white/10 transition-colors w-full text-left font-medium">
+                                <span class="flex items-center gap-2"><span class="w-3 h-3 rounded-full bg-emerald-400"></span> 翡翠綠 (毒焰)</span>
+                                <i class="fa-solid fa-check text-[10px] opacity-0 check-green"></i>
+                            </button>
+
+                            <button onclick="changeTheme('gold')" class="flex items-center justify-between px-3 py-1.5 rounded-lg text-xs hover:bg-white/10 transition-colors w-full text-left font-medium">
+                                <span class="flex items-center gap-2"><span class="w-3 h-3 rounded-full bg-amber-400"></span> 警示金 (日焰)</span>
+                                <i class="fa-solid fa-check text-[10px] opacity-0 check-gold"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Buy / Pre-order CTA Button -->
+                <a href="#purchase" class="btn-cyber-primary px-4 md:px-5 py-2 md:py-2.5 rounded-xl text-white font-extrabold text-xs tracking-wider flex items-center gap-2 metallic-sheen">
+                    <i class="fa-solid fa-cart-shopping text-xs"></i> <span>立即購買</span>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section (100vh 開場區塊 + 視差浮動卡片 + 雙 CTA) -->
+    <section class="relative h-screen w-full flex items-center justify-center overflow-hidden pt-16 z-10" id="hero">
+        
+        <!-- Parallax Background Glow Lights -->
+        <div class="parallax-bg absolute top-1/4 left-1/4 w-[550px] h-[550px] rounded-full bg-[var(--flame-color)]/25 blur-3xl pointer-events-none" data-speed="0.2"></div>
+        <div class="parallax-bg absolute bottom-1/4 right-1/4 w-[550px] h-[550px] rounded-full bg-[var(--secondary-color)]/25 blur-3xl pointer-events-none" data-speed="-0.3"></div>
+
+        <div class="relative z-10 max-w-5xl mx-auto px-6 text-center flex flex-col items-center justify-center h-full py-8">
+            
+            <!-- Hero Glass Focus Card -->
+            <div class="parallax-fg animate-float metallic-sheen relative w-full max-w-3xl glass-panel rounded-2xl p-6 md:p-10 border border-white/20 shadow-2xl my-auto" data-speed="-0.12">
+                
+                <!-- Tech Metallic Corner Accents -->
+                <div class="absolute -top-1.5 -left-1.5 w-6 h-6 border-t-2 border-l-2 border-accent"></div>
+                <div class="absolute -top-1.5 -right-1.5 w-6 h-6 border-t-2 border-r-2 border-accent"></div>
+                <div class="absolute -bottom-1.5 -left-1.5 w-6 h-6 border-b-2 border-l-2 border-[var(--secondary-color)]"></div>
+                <div class="absolute -bottom-1.5 -right-1.5 w-6 h-6 border-b-2 border-r-2 border-[var(--secondary-color)]"></div>
+
+                <!-- Game Release Badge -->
+                <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[var(--accent-color)]/15 border border-[var(--accent-color)]/40 text-accent text-xs font-bold tracking-widest uppercase mb-4 shadow-md">
+                    <i class="fa-solid fa-fire text-xs animate-bounce"></i> 2026 戰術槍戰烈焰封測中
+                </div>
+
+                <!-- Main Headline -->
+                <h1 class="font-display text-3xl md:text-5xl lg:text-6xl font-black tracking-tight mb-4 leading-tight">
+                    極致真實戰場 <br/>
+                    <span class="bg-clip-text text-transparent bg-gradient-to-r from-[var(--accent-color)] via-white to-[var(--secondary-color)]">
+                        重塑射擊競技體驗
+                    </span>
+                </h1>
+
+                <p class="text-sm md:text-base max-w-2xl mx-auto mb-8 font-light leading-relaxed opacity-90">
+                    搭載最新 CyberEngine 光線追蹤物理引擎，體驗零延遲彈道模擬與彈性戰術槍改。投入 12v12 動態氣候戰場，定義屬於你的生死槍戰傳奇。
+                </p>
+
+                <!-- Dual CTA Buttons (雙 CTA 按鈕：購買 / 了解更多) -->
+                <div class="flex flex-col sm:flex-row items-center justify-center gap-4 w-full max-w-md mx-auto">
+                    <a href="#purchase" class="btn-cyber-primary w-full sm:w-1/2 py-3.5 px-6 rounded-xl font-black text-white text-sm tracking-wider flex items-center justify-center gap-2 group metallic-sheen">
+                        <span>立即購買</span>
+                        <i class="fa-solid fa-arrow-right text-xs group-hover:translate-x-1 transition-transform"></i>
+                    </a>
+                    <a href="#features" class="btn-cyber-secondary w-full sm:w-1/2 py-3.5 px-6 rounded-xl font-bold text-accent text-sm tracking-wider flex items-center justify-center gap-2 metallic-sheen">
+                        <i class="fa-solid fa-circle-info text-xs"></i> 了解更多
+                    </a>
+                </div>
+            </div>
+
+            <!-- Scroll Down Prompt Indicator -->
+            <div class="absolute bottom-6 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-xs opacity-75">
+                <span class="font-display tracking-widest uppercase text-[9px] font-bold">SCROLL TO EXPLORE</span>
+                <div class="w-5 h-8 border-2 border-white/20 rounded-full flex justify-center p-1">
+                    <div class="w-1 h-2 bg-accent rounded-full animate-bounce"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Banner 區 (High-Impact Stats Banner) -->
+    <section class="relative z-20 py-12 border-y border-white/10 glass-panel">
+        <div class="max-w-7xl mx-auto px-6 grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+            <div class="reveal-element">
+                <div class="font-display text-3xl md:text-4xl font-extrabold text-accent mb-1">100+</div>
+                <div class="text-xs font-semibold uppercase tracking-wider opacity-80">模組化槍械部件</div>
+            </div>
+            <div class="reveal-element" style="transition-delay: 100ms;">
+                <div class="font-display text-3xl md:text-4xl font-extrabold text-[var(--secondary-color)] mb-1">4K 120FPS</div>
+                <div class="text-xs font-semibold uppercase tracking-wider opacity-80">超高畫質支援</div>
+            </div>
+            <div class="reveal-element" style="transition-delay: 200ms;">
+                <div class="font-display text-3xl md:text-4xl font-extrabold text-accent mb-1">12v12</div>
+                <div class="text-xs font-semibold uppercase tracking-wider opacity-80">極速跨平台對決</div>
+            </div>
+            <div class="reveal-element" style="transition-delay: 300ms;">
+                <div class="font-display text-3xl md:text-4xl font-extrabold mb-1">99.8%</div>
+                <div class="text-xs font-semibold uppercase tracking-wider opacity-80">反作弊偵測成功率</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 產品介紹 / 特色區塊 (Product Features Section) -->
+    <section id="features" class="py-24 relative z-10 max-w-7xl mx-auto px-6">
+        <div class="text-center max-w-3xl mx-auto mb-16 reveal-element">
+            <h2 class="text-xs font-display text-accent tracking-widest uppercase mb-2 font-bold">NEXT-GEN FEATURES</h2>
+            <p class="text-3xl md:text-4xl font-black font-display">重塑競技槍戰的核心革命</p>
+            <div class="w-16 h-1 bg-gradient-to-r from-[var(--accent-color)] to-[var(--secondary-color)] mx-auto mt-4 rounded-full"></div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div class="glass-panel metallic-sheen p-8 rounded-2xl border border-white/10 hover:border-accent transition-all duration-300 hover:-translate-y-2 group reveal-element">
+                <div class="w-14 h-14 rounded-xl bg-[var(--accent-color)]/10 border border-[var(--accent-color)]/30 flex items-center justify-center text-accent text-2xl mb-6 group-hover:scale-110 transition-transform shadow-lg">
+                    <i class="fa-solid fa-gun"></i>
+                </div>
+                <h3 class="text-xl font-bold mb-3 group-hover:text-accent transition-colors">深度戰術槍改系統</h3>
+                <p class="text-sm leading-relaxed opacity-80">
+                    自由拆解並組裝超過 1000 種配件，實體影響槍械後座力、瞄準速度與子彈初速，打造最順手的專屬武器。
+                </p>
+            </div>
+
+            <div class="glass-panel metallic-sheen p-8 rounded-2xl border border-white/10 hover:border-[var(--secondary-color)] transition-all duration-300 hover:-translate-y-2 group reveal-element" style="transition-delay: 150ms;">
+                <div class="w-14 h-14 rounded-xl bg-[var(--secondary-color)]/10 border border-[var(--secondary-color)]/30 flex items-center justify-center text-[var(--secondary-color)] text-2xl mb-6 group-hover:scale-110 transition-transform shadow-lg">
+                    <i class="fa-solid fa-fire"></i>
+                </div>
+                <h3 class="text-xl font-bold mb-3 group-hover:text-[var(--secondary-color)] transition-colors">動態破壞與烈焰引擎</h3>
+                <p class="text-sm leading-relaxed opacity-80">
+                    動態物理與火場擴散系統，牆面、掩體均可被高穿透力武器摧毀。搭配光線追蹤視覺，將戰場臨場感推向極致。
+                </p>
+            </div>
+
+            <div class="glass-panel metallic-sheen p-8 rounded-2xl border border-white/10 hover:border-accent transition-all duration-300 hover:-translate-y-2 group reveal-element">
+                <div class="w-14 h-14 rounded-xl bg-[var(--accent-color)]/10 border border-[var(--accent-color)]/30 flex items-center justify-center text-accent text-2xl mb-6 group-hover:scale-110 transition-transform shadow-lg">
+                    <i class="fa-solid fa-network-wired"></i>
+                </div>
+                <h3 class="text-xl font-bold mb-3 group-hover:text-accent transition-colors">零延遲全球跨平台伺服器</h3>
+                <p class="text-sm leading-relaxed opacity-80">
+                    採用自研量子封包對齊技術，在全球設有 32 個數據中心，確保 PC 與主機平台玩家皆享同等流暢的競技環境。
+                </p>
+            </div>
+
+            <div class="glass-panel metallic-sheen p-8 rounded-2xl border border-white/10 hover:border-[var(--secondary-color)] transition-all duration-300 hover:-translate-y-2 group reveal-element" style="transition-delay: 150ms;">
+                <div class="w-14 h-14 rounded-xl bg-[var(--secondary-color)]/10 border border-[var(--secondary-color)]/30 flex items-center justify-center text-[var(--secondary-color)] text-2xl mb-6 group-hover:scale-110 transition-transform shadow-lg">
+                    <i class="fa-solid fa-shield-halved"></i>
+                </div>
+                <h3 class="text-xl font-bold mb-3 group-hover:text-[var(--secondary-color)] transition-colors">AI 驅動反作弊核心</h3>
+                <p class="text-sm leading-relaxed opacity-80">
+                    全天候行為模式分析 AI，在零影響遊戲效能的前提下，精準捕捉任何外掛與違規操作，維護絕對公平。
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 武器系統區塊 (Weapon Customization Showcase) -->
+    <section id="weapons" class="py-20 relative glass-panel border-y border-white/10 z-10">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center max-w-3xl mx-auto mb-12 reveal-element">
+                <h2 class="text-xs font-display text-accent tracking-widest uppercase mb-2 font-bold">WEAPONS & MODS</h2>
+                <p class="text-3xl font-black font-display">未來戰術武器庫</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="glass-panel p-6 rounded-2xl border border-white/10 metallic-sheen reveal-element">
+                    <div class="h-40 rounded-xl bg-slate-900/60 border border-white/10 flex items-center justify-center p-4 mb-4">
+                        <i class="fa-solid fa-crosshairs text-5xl text-accent animate-pulse"></i>
+                    </div>
+                    <span class="text-xs font-display text-accent font-bold uppercase tracking-wider">ASSAULT RIFLE</span>
+                    <h4 class="text-lg font-bold mt-1 mb-2">VX-88 脈衝突擊步槍</h4>
+                    <p class="text-xs opacity-75">高射速且具備電磁穿透能力，適合中近距離高壓遭遇戰。</p>
+                </div>
+
+                <div class="glass-panel p-6 rounded-2xl border border-white/10 metallic-sheen reveal-element" style="transition-delay: 100ms;">
+                    <div class="h-40 rounded-xl bg-slate-900/60 border border-white/10 flex items-center justify-center p-4 mb-4">
+                        <i class="fa-solid fa-bullseye text-5xl text-[var(--secondary-color)] animate-pulse"></i>
+                    </div>
+                    <span class="text-xs font-display text-[var(--secondary-color)] font-bold uppercase tracking-wider">SNIPER RIFLE</span>
+                    <h4 class="text-lg font-bold mt-1 mb-2">K-9000 冰點狙擊槍</h4>
+                    <p class="text-xs opacity-75">搭載液氮冷卻系統，單發威力足以貫穿重型幾何防護盾。</p>
+                </div>
+
+                <div class="glass-panel p-6 rounded-2xl border border-white/10 metallic-sheen reveal-element" style="transition-delay: 200ms;">
+                    <div class="h-40 rounded-xl bg-slate-900/60 border border-white/10 flex items-center justify-center p-4 mb-4">
+                        <i class="fa-solid fa-shield text-5xl text-accent animate-pulse"></i>
+                    </div>
+                    <span class="text-xs font-display text-accent font-bold uppercase tracking-wider">SUBMACHINE GUN</span>
+                    <h4 class="text-lg font-bold mt-1 mb-2">VECTOR-Z 賽博衝鋒槍</h4>
+                    <p class="text-xs opacity-75">零後座力向量平衡系統，近身戰鬥的極速制敵首選。</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 實機展示與最新公告 (Gameplay & News Section) -->
+    <section id="gameplay" class="py-24 relative z-10 max-w-7xl mx-auto px-6">
+        <div class="flex flex-col md:flex-row md:items-end justify-between mb-12 reveal-element">
+            <div>
+                <h2 class="text-xs font-display text-accent tracking-widest uppercase mb-2 font-bold">GAMEPLAY PREVIEW</h2>
+                <p class="text-3xl font-black font-display">實機畫面與戰場視界</p>
+            </div>
+            <p class="text-xs md:text-sm max-w-md mt-4 md:mt-0 leading-relaxed opacity-80">
+                採用最新一代渲染技術，呈現擬真的槍火散射、動態天氣影響與細緻的士兵裝備質感。
+            </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-20">
+            <div class="group relative overflow-hidden rounded-2xl border border-white/10 glass-panel metallic-sheen reveal-element">
+                <div class="h-64 bg-slate-800 relative overflow-hidden flex items-center justify-center">
+                    <img src="https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&w=800&q=80" alt="Cyber City Warzone" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500 opacity-80 group-hover:opacity-100">
+                    <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-transparent"></div>
+                </div>
+                <div class="p-5 relative z-10">
+                    <span class="text-xs font-display text-accent font-bold tracking-wider">MAP: NEO-TOKYO</span>
+                    <h4 class="text-lg font-bold mt-1">賽博都市巷戰</h4>
+                </div>
+            </div>
+
+            <div class="group relative overflow-hidden rounded-2xl border border-white/10 glass-panel metallic-sheen reveal-element" style="transition-delay: 100ms;">
+                <div class="h-64 bg-slate-800 relative overflow-hidden flex items-center justify-center">
+                    <img src="https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&w=800&q=80" alt="Tactical Gun Customization" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500 opacity-80 group-hover:opacity-100">
+                    <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-transparent"></div>
+                </div>
+                <div class="p-5 relative z-10">
+                    <span class="text-xs font-display text-[var(--secondary-color)] font-bold tracking-wider">ARMORY: ZERO-G</span>
+                    <h4 class="text-lg font-bold mt-1">零重力槍械工坊</h4>
+                </div>
+            </div>
+
+            <div class="group relative overflow-hidden rounded-2xl border border-white/10 glass-panel metallic-sheen reveal-element" style="transition-delay: 200ms;">
+                <div class="h-64 bg-slate-800 relative overflow-hidden flex items-center justify-center">
+                    <img src="https://images.unsplash.com/photo-1538481199705-c710c4e965fc?auto=format&fit=crop&w=800&q=80" alt="Squad Battle" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500 opacity-80 group-hover:opacity-100">
+                    <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-transparent"></div>
+                </div>
+                <div class="p-5 relative z-10">
+                    <span class="text-xs font-display text-accent font-bold tracking-wider">MODE: SQUAD COMBAT</span>
+                    <h4 class="text-lg font-bold mt-1">小隊高壓攻防</h4>
+                </div>
+            </div>
+        </div>
+
+        <!-- 最新公告區塊 (News Section) -->
+        <div id="news" class="glass-panel p-8 rounded-2xl border border-white/10 reveal-element">
+            <h3 class="text-xl font-bold mb-6 font-display flex items-center gap-2">
+                <i class="fa-solid fa-bullhorn text-accent"></i> 最新戰報與營運公告
+            </h3>
+            <div class="space-y-4">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between p-4 rounded-xl bg-white/5 border border-white/5 hover:border-accent transition-colors">
+                    <div class="flex items-center gap-3">
+                        <span class="px-2.5 py-1 rounded bg-accent/20 text-accent text-[10px] font-bold">2026.09.28</span>
+                        <span class="font-semibold text-sm">【封測情報】全球 ALPHA 烈焰測試資格發放開始</span>
+                    </div>
+                    <span class="text-xs text-slate-400 mt-2 sm:mt-0 font-display">READ MORE &rarr;</span>
+                </div>
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between p-4 rounded-xl bg-white/5 border border-white/5 hover:border-accent transition-colors">
+                    <div class="flex items-center gap-3">
+                        <span class="px-2.5 py-1 rounded bg-[var(--secondary-color)]/20 text-[var(--secondary-color)] text-[10px] font-bold">2026.09.15</span>
+                        <span class="font-semibold text-sm">【社群活動】參加預購抽「冰點專屬戰術改裝箱」與 RTX 5090</span>
+                    </div>
+                    <span class="text-xs text-slate-400 mt-2 sm:mt-0 font-display">READ MORE &rarr;</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 需求規格與購買區塊 (Specs & Purchase Section) -->
+    <section id="purchase" class="py-24 relative z-10 max-w-7xl mx-auto px-6">
+        <div class="text-center max-w-3xl mx-auto mb-16 reveal-element">
+            <h2 class="text-xs font-display text-accent tracking-widest uppercase mb-2 font-bold">JOIN THE BATTLE</h2>
+            <p class="text-3xl md:text-4xl font-black font-display">選擇你的戰術版本</p>
+        </div>
+
+        <!-- Purchase Cards Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto mb-20">
+            <!-- Standard Edition -->
+            <div class="glass-panel metallic-sheen p-8 rounded-2xl border border-white/10 flex flex-col justify-between hover:border-slate-400 transition-all reveal-element">
+                <div>
+                    <div class="text-xs font-display text-slate-400 uppercase tracking-widest mb-2 font-bold">STANDARD EDITION</div>
+                    <h3 class="text-2xl font-black font-display mb-4">標準版</h3>
+                    <div class="text-3xl font-extrabold mb-6">NT$ 1,490</div>
+                    <ul class="space-y-3 text-sm opacity-90 mb-8">
+                        <li class="flex items-center gap-3"><i class="fa-solid fa-check text-accent"></i> 《CYBERSTRIKE》主程式</li>
+                        <li class="flex items-center gap-3"><i class="fa-solid fa-check text-accent"></i> 解鎖 12 名基本幹員</li>
+                        <li class="flex items-center gap-3"><i class="fa-solid fa-check text-accent"></i> 第一季實戰通行證</li>
+                    </ul>
+                </div>
+                <button class="w-full py-3.5 rounded-xl border border-white/20 font-bold hover:bg-white/10 transition-colors">
+                    預購標準版
+                </button>
+            </div>
+
+            <!-- Ultimate Edition -->
+            <div class="glass-panel metallic-sheen p-8 rounded-2xl border-2 border-accent relative flex flex-col justify-between shadow-2xl shadow-[var(--accent-color)]/20 reveal-element" style="transition-delay: 150ms;">
+                <div class="absolute -top-3.5 right-6 bg-accent text-slate-950 text-[10px] font-black font-display px-3 py-1 rounded-full uppercase tracking-wider shadow-lg">
+                    RECOMMENDED
+                </div>
+                <div>
+                    <div class="text-xs font-display text-accent uppercase tracking-widest mb-2 font-bold">ULTIMATE EDITION</div>
+                    <h3 class="text-2xl font-black font-display mb-4">終極數位版</h3>
+                    <div class="text-3xl font-extrabold text-accent mb-6">NT$ 2,390</div>
+                    <ul class="space-y-3 text-sm opacity-90 mb-8">
+                        <li class="flex items-center gap-3"><i class="fa-solid fa-check text-accent"></i> 包含標準版所有內容</li>
+                        <li class="flex items-center gap-3"><i class="fa-solid fa-check text-accent"></i> 提前 3 天搶先體驗權限</li>
+                        <li class="flex items-center gap-3"><i class="fa-solid fa-check text-accent"></i> 獨家「零度冷凍烈焰」傳奇槍械塗裝</li>
+                        <li class="flex items-center gap-3"><i class="fa-solid fa-check text-accent"></i> 2,000 Cyber 戰術代幣</li>
+                    </ul>
+                </div>
+                <button class="btn-cyber-primary w-full py-3.5 rounded-xl text-white font-bold metallic-sheen">
+                    立即預購終極版
+                </button>
+            </div>
+        </div>
+
+        <!-- System Requirements Table -->
+        <div id="specs" class="glass-panel p-8 rounded-2xl border border-white/10 max-w-4xl mx-auto reveal-element">
+            <h3 class="text-xl font-bold mb-6 font-display flex items-center gap-2">
+                <i class="fa-solid fa-microchip text-accent"></i> 系統配備需求
+            </h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 text-sm">
+                <div>
+                    <h4 class="text-accent font-bold mb-3 uppercase tracking-wider text-xs">最低系統需求</h4>
+                    <ul class="space-y-2.5 opacity-90">
+                        <li><strong class="opacity-60">作業系統:</strong> Windows 10/11 64-bit</li>
+                        <li><strong class="opacity-60">處理器:</strong> Intel Core i5-8400 / AMD Ryzen 5 2600</li>
+                        <li><strong class="opacity-60">記憶體:</strong> 12 GB RAM</li>
+                        <li><strong class="opacity-60">顯示卡:</strong> NVIDIA RTX 2060 / AMD RX 5700</li>
+                        <li><strong class="opacity-60">儲存空間:</strong> 80 GB 可用空間 (建議 SSD)</li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-[var(--secondary-color)] font-bold mb-3 uppercase tracking-wider text-xs">推薦系統需求</h4>
+                    <ul class="space-y-2.5 opacity-90">
+                        <li><strong class="opacity-60">作業系統:</strong> Windows 11 64-bit</li>
+                        <li><strong class="opacity-60">處理器:</strong> Intel Core i7-12700 / AMD Ryzen 7 5800X</li>
+                        <li><strong class="opacity-60">記憶體:</strong> 16 GB RAM</li>
+                        <li><strong class="opacity-60">顯示卡:</strong> NVIDIA RTX 4070 / AMD RX 7800 XT</li>
+                        <li><strong class="opacity-60">儲存空間:</strong> 80 GB NVMe SSD</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="community" class="border-t border-white/10 glass-panel py-12 relative z-10">
+        <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-6">
+            <div class="flex items-center gap-3">
+                <svg class="w-6 h-6 text-accent" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polygon points="12 2 2 7 12 12 22 7 12 2" fill="currentColor" fill-opacity="0.2" />
+                    <polyline points="2 12 12 17 22 12" />
+                </svg>
+                <span class="font-display font-bold text-lg tracking-wider">CYBERSTRIKE: ZERO KELVIN</span>
+            </div>
+
+            <!-- Social Community Links -->
+            <div class="flex items-center gap-6 text-xl opacity-80">
+                <a href="#" class="hover:text-accent transition-colors"><i class="fa-brands fa-discord"></i></a>
+                <a href="#" class="hover:text-accent transition-colors"><i class="fa-brands fa-x-twitter"></i></a>
+                <a href="#" class="hover:text-accent transition-colors"><i class="fa-brands fa-youtube"></i></a>
+                <a href="#" class="hover:text-accent transition-colors"><i class="fa-brands fa-steam"></i></a>
+            </div>
+
+            <div class="text-xs opacity-60 font-medium">
+                © 2026 CYBERSTRIKE Inc. All rights reserved. 版權所有。
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // --- 1. Dynamic Theme & Light Cyber Mode Logic ---
+        function changeTheme(themeName) {
+            document.body.classList.remove('theme-red', 'theme-green', 'theme-gold');
+
+            if (themeName !== 'cyan') {
+                document.body.classList.add(`theme-${themeName}`);
+            }
+
+            localStorage.setItem('cyberstrike_theme', themeName);
+
+            document.querySelectorAll('[class*="check-"]').forEach(el => el.style.opacity = '0');
+            const activeCheck = document.querySelector(`.check-${themeName}`);
+            if (activeCheck) activeCheck.style.opacity = '1';
+        }
+
+        function toggleLightCyberMode() {
+            const isLight = document.body.classList.toggle('light-mode');
+            const icon = document.getElementById('light-mode-icon');
+            
+            if (isLight) {
+                icon.className = 'fa-solid fa-moon text-sm';
+                localStorage.setItem('cyberstrike_lightmode', 'true');
+            } else {
+                icon.className = 'fa-solid fa-sun text-sm';
+                localStorage.setItem('cyberstrike_lightmode', 'false');
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const savedTheme = localStorage.getItem('cyberstrike_theme') || 'cyan';
+            changeTheme(savedTheme);
+
+            const savedLight = localStorage.getItem('cyberstrike_lightmode') === 'true';
+            if (savedLight) {
+                document.body.classList.add('light-mode');
+                document.getElementById('light-mode-icon').className = 'fa-solid fa-moon text-sm';
+            }
+
+            // --- 2. Scroll Reveal Observer ---
+            const revealElements = document.querySelectorAll('.reveal-element');
+            const revealObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('active');
+                    }
+                });
+            }, { threshold: 0.15 });
+
+            revealElements.forEach(el => revealObserver.observe(el));
+
+            // --- 3. Parallax & Sticky Navigation Handler ---
+            const parallaxBgs = document.querySelectorAll('.parallax-bg');
+            const parallaxFgs = document.querySelectorAll('.parallax-fg');
+
+            window.addEventListener('scroll', () => {
+                const scrolled = window.pageYOffset;
+
+                parallaxBgs.forEach(el => {
+                    const speed = parseFloat(el.getAttribute('data-speed') || 0.2);
+                    el.style.transform = `translateY(${scrolled * speed}px)`;
+                });
+
+                parallaxFgs.forEach(el => {
+                    const speed = parseFloat(el.getAttribute('data-speed') || -0.15);
+                    if (scrolled < window.innerHeight) {
+                        el.style.transform = `translateY(${scrolled * speed}px)`;
+                    }
+                });
+
+                const navbar = document.getElementById('navbar');
+                if (scrolled > 40) {
+                    navbar.classList.add('shadow-2xl');
+                } else {
+                    navbar.classList.remove('shadow-2xl');
+                }
+            });
+
+            // --- 4. Crosshair Cursor Smoothing ---
+            const cursorDot = document.getElementById('cursor-dot');
+            const cursorRing = document.getElementById('cursor-ring');
+
+            let mouseX = window.innerWidth / 2;
+            let mouseY = window.innerHeight / 2;
+            let ringX = mouseX;
+            let ringY = mouseY;
+
+            window.addEventListener('mousemove', (e) => {
+                mouseX = e.clientX;
+                mouseY = e.clientY;
+
+                cursorDot.style.transform = `translate(${mouseX}px, ${mouseY}px) translate(-50%, -50%)`;
+            });
+
+            function animateCursor() {
+                ringX += (mouseX - ringX) * 0.18;
+                ringY += (mouseY - ringY) * 0.18;
+
+                cursorRing.style.transform = `translate(${ringX}px, ${ringY}px) translate(-50%, -50%)`;
+                requestAnimationFrame(animateCursor);
+            }
+            animateCursor();
+
+            document.querySelectorAll('a, button, input').forEach(el => {
+                el.addEventListener('mouseenter', () => {
+                    cursorRing.style.width = '48px';
+                    cursorRing.style.height = '48px';
+                });
+                el.addEventListener('mouseleave', () => {
+                    cursorRing.style.width = '38px';
+                    cursorRing.style.height = '38px';
+                });
+            });
+
+            // --- 5. ENHANCED DYNAMIC BACKGROUND FLAME & EMBER ENGINE ---
+            const flameCanvas = document.getElementById('flame-canvas');
+            const flameCtx = flameCanvas.getContext('2d');
+
+            function resizeFlameCanvas() {
+                flameCanvas.width = window.innerWidth;
+                flameCanvas.height = window.innerHeight;
+            }
+            resizeFlameCanvas();
+            window.addEventListener('resize', resizeFlameCanvas);
+
+            const flameParticles = [];
+            const flameCount = 110; // Significantly enhanced count for visible flames
+
+            class CyberFlameParticle {
+                constructor() {
+                    this.reset(true);
+                }
+
+                reset(initial = false) {
+                    this.x = Math.random() * flameCanvas.width;
+                    this.y = initial ? Math.random() * flameCanvas.height : flameCanvas.height + Math.random() * 40;
+                    
+                    // Flame size & rise velocity
+                    this.size = Math.random() * 5 + 2;
+                    this.speedY = -(Math.random() * 2.5 + 1.2); 
+                    this.speedX = (Math.random() - 0.5) * 1.5;
+                    this.opacity = Math.random() * 0.7 + 0.3;
+                    this.life = 1.0;
+                    this.decay = Math.random() * 0.008 + 0.003;
+                    this.wobble = Math.random() * Math.PI * 2;
+                    this.wobbleSpeed = Math.random() * 0.05 + 0.02;
+                }
+
+                update() {
+                    this.y += this.speedY;
+                    this.wobble += this.wobbleSpeed;
+                    this.x += this.speedX + Math.sin(this.wobble) * 0.8;
+                    this.life -= this.decay;
+                    this.size *= 0.992; // Shrink as fire ascends
+
+                    if (this.y < -20 || this.life <= 0 || this.size <= 0.5) {
+                        this.reset(false);
+                    }
+                }
+
+                draw() {
+                    const style = getComputedStyle(document.body);
+                    const accent = style.getPropertyValue('--accent-color').trim() || '#00f0ff';
+                    const flameColor = style.getPropertyValue('--flame-color').trim() || '#00d8ff';
+
+                    flameCtx.save();
+                    flameCtx.globalCompositeOperation = 'lighter'; // Intense flame glow effect
+                    flameCtx.globalAlpha = this.opacity * this.life;
+
+                    // Gradient Flame Particle Core
+                    const gradient = flameCtx.createRadialGradient(
+                        this.x, this.y, 0,
+                        this.x, this.y, this.size * 2
+                    );
+                    gradient.addColorStop(0, '#ffffff');
+                    gradient.addColorStop(0.4, flameColor);
+                    gradient.addColorStop(1, accent);
+
+                    flameCtx.fillStyle = gradient;
+                    flameCtx.shadowColor = flameColor;
+                    flameCtx.shadowBlur = 18;
+
+                    flameCtx.beginPath();
+                    flameCtx.arc(this.x, this.y, this.size * 1.5, 0, Math.PI * 2);
+                    flameCtx.fill();
+                    flameCtx.restore();
+                }
+            }
+
+            for (let i = 0; i < flameCount; i++) {
+                flameParticles.push(new CyberFlameParticle());
+            }
+
+            function animateFlames() {
+                flameCtx.clearRect(0, 0, flameCanvas.width, flameCanvas.height);
+
+                for (let i = 0; i < flameParticles.length; i++) {
+                    flameParticles[i].update();
+                    flameParticles[i].draw();
+                }
+                requestAnimationFrame(animateFlames);
+            }
+            animateFlames();
+
+            // --- 6. Muzzle Spark Click Particle Physics Engine ---
+            const sparkCanvas = document.getElementById('spark-canvas');
+            const sparkCtx = sparkCanvas.getContext('2d');
+
+            function resizeSparkCanvas() {
+                sparkCanvas.width = window.innerWidth;
+                sparkCanvas.height = window.innerHeight;
+            }
+            resizeSparkCanvas();
+            window.addEventListener('resize', resizeSparkCanvas);
+
+            let sparkParticles = [];
+
+            class SparkParticle {
+                constructor(x, y) {
+                    this.x = x;
+                    this.y = y;
+                    const angle = Math.random() * Math.PI * 2;
+                    const speed = Math.random() * 10 + 4;
+                    this.vx = Math.cos(angle) * speed;
+                    this.vy = Math.sin(angle) * speed;
+                    this.size = Math.random() * 4 + 1.5;
+                    this.life = 1.0;
+                    this.decay = Math.random() * 0.04 + 0.025;
+                    
+                    const style = getComputedStyle(document.body);
+                    this.color = style.getPropertyValue('--accent-color').trim() || '#00f0ff';
+                }
+
+                update() {
+                    this.x += this.vx;
+                    this.y += this.vy;
+                    this.vy += 0.2; // Gravity effect
+                    this.life -= this.decay;
+                }
+
+                draw() {
+                    sparkCtx.save();
+                    sparkCtx.globalCompositeOperation = 'lighter';
+                    sparkCtx.globalAlpha = this.life;
+                    sparkCtx.fillStyle = this.color;
+                    sparkCtx.shadowColor = this.color;
+                    sparkCtx.shadowBlur = 12;
+                    sparkCtx.beginPath();
+                    sparkCtx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                    sparkCtx.fill();
+                    sparkCtx.restore();
+                }
+            }
+
+            window.addEventListener('click', (e) => {
+                for (let i = 0; i < 26; i++) {
+                    sparkParticles.push(new SparkParticle(e.clientX, e.clientY));
+                }
+            });
+
+            function renderSparks() {
+                sparkCtx.clearRect(0, 0, sparkCanvas.width, sparkCanvas.height);
+
+                for (let i = sparkParticles.length - 1; i >= 0; i--) {
+                    sparkParticles[i].update();
+                    sparkParticles[i].draw();
+
+                    if (sparkParticles[i].life <= 0) {
+                        sparkParticles.splice(i, 1);
+                    }
+                }
+
+                requestAnimationFrame(renderSparks);
+            }
+            renderSparks();
+        });
+    </script>
+</body>
+</html>
